@@ -8,15 +8,11 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         "Write your forwards methods here."
-        for project in orm.PersonRepeatPeriod.objects.all():
-            project.user = project.contact.user
-            project.save()
+        pass
 
     def backwards(self, orm):
         "Write your backwards methods here."
-        for project in orm.PersonRepeatPeriod.objects.all():
-            project.contact = project.user.contacts.all()[0]
-            project.save()
+        pass
 
 
     models = {

@@ -9,14 +9,13 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         
         # Deleting field 'Project.business'
-        db.delete_column('timepiece_project', 'business_id')
+        pass
 
 
     def backwards(self, orm):
         
         # Adding field 'Project.business'
-        db.add_column('timepiece_project', 'business', self.gf('django.db.models.fields.related.ForeignKey')(related_name='business_projects', null=True, to=orm['crm.Contact'], blank=True), keep_default=False)
-
+        pass
 
     models = {
         'auth.group': {

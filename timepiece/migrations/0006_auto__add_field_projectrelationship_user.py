@@ -9,7 +9,6 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         
         # Adding field 'ProjectRelationship.user'
-        db.delete_index('timepiece_projectrelationship', 'user_id')
         db.add_column('timepiece_projectrelationship', 'user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='project_relationships', null=True, to=orm['auth.User']), keep_default=False)
 
 

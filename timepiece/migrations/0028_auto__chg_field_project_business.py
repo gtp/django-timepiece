@@ -9,13 +9,14 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         
         # Changing field 'Project.business'
-        db.alter_column('timepiece_project', 'business_id', self.gf('django.db.models.fields.related.ForeignKey')(null=True, to=orm['crm.Contact']))
-
+        #db.alter_column('timepiece_project', 'business_id', self.gf('django.db.models.fields.related.ForeignKey')(null=True, to=orm['crm.Contact']))
+        pass
 
     def backwards(self, orm):
         
         # Changing field 'Project.business'
-        db.alter_column('timepiece_project', 'business_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['crm.Contact']))
+        #db.alter_column('timepiece_project', 'business_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['crm.Contact']))
+        pass
 
 
     models = {

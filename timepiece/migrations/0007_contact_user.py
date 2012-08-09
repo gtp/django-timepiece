@@ -8,18 +8,11 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         "Write your forwards methods here."
-        null_contacts = orm.ProjectRelationship.objects.filter(contact__user__isnull=True)
-        null_contacts.delete()
-        for project in orm.ProjectRelationship.objects.all():
-            project.user = project.contact.user
-            project.save()
+        pass
 
     def backwards(self, orm):
         "Write your backwards methods here."
-        for project in orm.ProjectRelationship.objects.all():
-            contact = orm['crm.Contact'].objects.get(user=project.user)
-            project.contact = contact
-            project.save()
+        pass
 
     models = {
         'auth.group': {

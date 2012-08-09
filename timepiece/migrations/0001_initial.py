@@ -26,7 +26,6 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('trac_environment', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
-            ('business', self.gf('django.db.models.fields.related.ForeignKey')(related_name='business_projects', to=orm['crm.Contact'])),
             ('point_person', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('type', self.gf('django.db.models.fields.related.ForeignKey')(related_name='projects_with_type', to=orm['timepiece.Attribute'])),
             ('status', self.gf('django.db.models.fields.related.ForeignKey')(related_name='projects_with_status', to=orm['timepiece.Attribute'])),
@@ -38,29 +37,20 @@ class Migration(SchemaMigration):
         # Adding M2M table for field interactions on 'Project'
         db.create_table('timepiece_project_interactions', (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('project', models.ForeignKey(orm['timepiece.project'], null=False)),
-            ('interaction', models.ForeignKey(orm['crm.interaction'], null=False))
+            ('project', models.ForeignKey(orm['timepiece.project'], null=False))
         ))
-        db.create_unique('timepiece_project_interactions', ['project_id', 'interaction_id'])
 
         # Adding model 'ProjectRelationship'
         db.create_table('timepiece_projectrelationship', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('contact', self.gf('django.db.models.fields.related.ForeignKey')(related_name='project_relationships', to=orm['crm.Contact'])),
             ('project', self.gf('django.db.models.fields.related.ForeignKey')(related_name='project_relationships', to=orm['timepiece.Project'])),
         ))
         db.send_create_signal('timepiece', ['ProjectRelationship'])
 
-        # Adding unique constraint on 'ProjectRelationship', fields ['contact', 'project']
-        db.create_unique('timepiece_projectrelationship', ['contact_id', 'project_id'])
-
         # Adding M2M table for field types on 'ProjectRelationship'
         db.create_table('timepiece_projectrelationship_types', (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('projectrelationship', models.ForeignKey(orm['timepiece.projectrelationship'], null=False)),
-            ('relationshiptype', models.ForeignKey(orm['crm.relationshiptype'], null=False))
         ))
-        db.create_unique('timepiece_projectrelationship_types', ['projectrelationship_id', 'relationshiptype_id'])
 
         # Adding model 'Activity'
         db.create_table('timepiece_activity', (
@@ -116,7 +106,6 @@ class Migration(SchemaMigration):
         # Adding model 'PersonRepeatPeriod'
         db.create_table('timepiece_personrepeatperiod', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('contact', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['crm.Contact'], unique=True)),
             ('repeat_period', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['timepiece.RepeatPeriod'], unique=True)),
         ))
         db.send_create_signal('timepiece', ['PersonRepeatPeriod'])
@@ -135,20 +124,15 @@ class Migration(SchemaMigration):
         db.create_table('timepiece_contractassignment', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('contract', self.gf('django.db.models.fields.related.ForeignKey')(related_name='assignments', to=orm['timepiece.ProjectContract'])),
-            ('contact', self.gf('django.db.models.fields.related.ForeignKey')(related_name='assignments', to=orm['crm.Contact'])),
             ('start_date', self.gf('django.db.models.fields.DateField')()),
             ('end_date', self.gf('django.db.models.fields.DateField')()),
             ('num_hours', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=8, decimal_places=2)),
         ))
         db.send_create_signal('timepiece', ['ContractAssignment'])
 
-        # Adding unique constraint on 'ContractAssignment', fields ['contract', 'contact']
-        db.create_unique('timepiece_contractassignment', ['contract_id', 'contact_id'])
-
         # Adding model 'PersonSchedule'
         db.create_table('timepiece_personschedule', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('contact', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['crm.Contact'], unique=True)),
             ('hours_per_week', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=8, decimal_places=2)),
             ('end_date', self.gf('django.db.models.fields.DateField')()),
         ))

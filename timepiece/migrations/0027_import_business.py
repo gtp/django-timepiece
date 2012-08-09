@@ -7,23 +7,8 @@ from django.db import models
 class Migration(DataMigration):
 
     def forwards(self, orm):
-        businesses = orm['crm.Contact'].objects.filter(type='business')
-        for business in businesses:
-            new_business, created = orm.Business.objects.get_or_create(
-                slug=business.slug,
-                external_id=business.pk,
-                defaults={
-                    'name': business.name,
-                    'email': business.email,
-                    'description': business.description,
-                    'notes': business.notes,
-                }    
-            )
-            for project in business.business_projects.all():
-                project.new_business = new_business
-                project.save()
-            
-
+        pass
+        
     def backwards(self, orm):
         "0029 handles the backwards"
         

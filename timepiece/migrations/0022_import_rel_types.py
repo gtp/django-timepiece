@@ -8,30 +8,11 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         "Write your forwards methods here."
-        types = orm['crm.relationshiptype'].objects.all()
         orm['timepiece.relationshiptype'].objects.all().delete()
-        for typ in types:
-            new_typ = orm['timepiece.relationshiptype'](
-                name=typ.name,
-                slug=typ.slug,
-                )
-            new_typ.save()
-            for rel in typ.project_relationships_old.all():
-                rel.types.add(new_typ)
-                rel.save()
-
+        
     def backwards(self, orm):
         "Write your backwards methods here."
-        types = orm.RelationshipType.objects.all()
-        for typ in types:
-            (new_typ, created) = orm['crm.relationshiptype'].objects.get_or_create(
-                name=typ.name,
-                slug=typ.slug,
-                )
-            new_typ.save()
-            for rel in typ.project_relationships.all():
-                rel.types_old.add(new_typ)
-                rel.save()
+        pass
 
     models = {
         'auth.group': {

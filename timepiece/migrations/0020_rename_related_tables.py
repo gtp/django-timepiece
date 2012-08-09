@@ -8,7 +8,6 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        db.delete_unique('timepiece_projectrelationship_types', ['projectrelationship_id', 'relationshiptype_id'])
         db.rename_table('timepiece_projectrelationship_types','timepiece_projectrelationship_types_old',)
         #db.rename_table('timepiece_projectrelationship_types_relationshiptype_id', 'timepiece_projectrelationship_types_old_relationshiptype_id')
         #db.rename_table('timepiece_projectrelationship_types_projectrelationship_id','timepiece_projectrelationship_types_old_projectrelationship_id',)
@@ -18,7 +17,7 @@ class Migration(SchemaMigration):
         db.rename_table('timepiece_projectrelationship_types_old','timepiece_projectrelationship_types',)
         #db.rename_table('timepiece_projectrelationship_types_old_projectrelationship_id','timepiece_projectrelationship_types_projectrelationship_id',)
         #db.rename_table('timepiece_projectrelationship_types_old_relationshiptype_id', 'timepiece_projectrelationship_types_relationshiptype_id')
-        db.create_unique('timepiece_projectrelationship_types', ['projectrelationship_id', 'relationshiptype_id'])
+        
 
     models = {
         'auth.group': {
