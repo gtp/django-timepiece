@@ -1134,6 +1134,7 @@ def add_user_to_project(request, project_id):
                 user=user,
                 project=project,
             )
+            
     if 'next' in request.REQUEST and request.REQUEST['next']:
         return HttpResponseRedirect(request.REQUEST['next'])
     else:
