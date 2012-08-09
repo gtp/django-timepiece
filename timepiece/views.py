@@ -598,8 +598,7 @@ def view_person_time_sheet(request, user_id):
         approved_count = statuses.count('approved')
         show_verify = unverified_count != 0
     if request.user.has_perm('timepiece.change_entry'):
-        #show_approve = verified_count + approved_count == total_statuses and verified_count > 0 and total_statuses != 0
-        show_approve = verified_count > 0 and total_statuses != 0
+        show_approve = verified_count + approved_count == total_statuses and verified_count > 0 and total_statuses != 0
     context = {
         'year_month_form': year_month_form,
         'from_date': from_date,
