@@ -748,7 +748,7 @@ def invoice_projects(request):
     to_date = utils.get_month_start(date).date()
     from_date = None
     defaults = {
-        'to_date': (to_date - relativedelta(days=1)).strftime('%m/%d/%Y'),
+        'to_date': (to_date - relativedelta(days=1)).strftime('%d/%m/%Y'),
     }
     date_form = timepiece_forms.DateForm(request.GET or defaults)
     if request.GET and date_form.is_valid():
@@ -822,7 +822,7 @@ class InvoiceCSV(CSVMixin, InvoiceDetail):
     def get_filename(self, context):
         invoice = context['invoice']
         project = str(invoice.project).replace(' ', '_')
-        end_day = invoice.end.strftime("%m-%d-%Y")
+        end_day = invoice.end.strftime("%d-%m-%Y")
         return "Invoice-{0}-{1}".format(project, end_day)
 
     def convert_context_to_csv(self, context):
@@ -1483,7 +1483,7 @@ class HourlyReport(ReportMixin, CSVMixin, TemplateView):
         date_headers = context['date_headers']
 
         headers = ['Name']
-        headers.extend([date.strftime('%m/%d/%Y') for date in date_headers])
+        headers.extend([date.strftime('%d/%m/%Y') for date in date_headers])
         headers.append('Total')
         content.append(headers)
 
@@ -1541,7 +1541,7 @@ class BillableHours(ReportMixin, TemplateView):
                 hours_data[user] = []
 
                 for hour in hours:
-                    date = hour['day'].strftime('%m/%d/%Y')
+                    date = hour['day'].strftime('%d/%m/%Y')
                     if date not in dates:
                         dates.append(date)
 
