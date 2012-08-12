@@ -12,11 +12,16 @@ class Migration(SchemaMigration):
         db.alter_column('timepiece_entrygroup', 'created', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True))
 
         # Adding field 'EntryGroup.modified'
-        db.add_column('timepiece_entrygroup', 'modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, default=datetime.datetime(2011, 1, 1, 0, 0), blank=True), keep_default=False)
-        invoices = orm['timepiece.EntryGroup'].objects.all()
-        for invoice in invoices:
-            invoice.modified = invoice.created
-            invoice.save()
+        db.add_column('timepiece_entrygroup', 
+                      'modified', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, default=datetime.datetime(2011, 1, 1, 0, 0), blank=True), keep_default=False)
+
+        try:
+            invoices = orm['timepiece.EntryGroup'].objects.all()
+            for invoice in invoices:
+                invoice.modified = invoice.created
+                invoice.save()
+        except:
+            pass
 
     def backwards(self, orm):
         

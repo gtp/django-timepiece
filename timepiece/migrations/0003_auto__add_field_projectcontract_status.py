@@ -10,7 +10,11 @@ class Migration(SchemaMigration):
         
         # Adding field 'ProjectContract.status'
         db.add_column('timepiece_projectcontract', 'status', self.gf('django.db.models.fields.CharField')(default='upcomming', max_length=32), keep_default=False)
-        orm.ProjectContract.objects.update(status='complete')
+
+        try:
+            orm.ProjectContract.objects.update(status='complete')
+        except: 
+            pass
 
     def backwards(self, orm):
         

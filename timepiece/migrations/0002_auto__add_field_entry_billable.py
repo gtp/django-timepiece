@@ -10,8 +10,12 @@ class Migration(SchemaMigration):
         
         # Adding field 'Entry.billable'
         db.add_column('timepiece_entry', 'billable', self.gf('django.db.models.fields.BooleanField')(default=True), keep_default=False)
-        orm.Entry.objects.update(billable=False)
-        orm.Entry.objects.exclude(activity__name='Non-billable').update(billable=True)
+
+        try:
+            orm.Entry.objects.update(billable=False)
+            orm.Entry.objects.exclude(activity__name='Non-billable').update(billable=True)
+        except:
+            pass
 
     def backwards(self, orm):
         
