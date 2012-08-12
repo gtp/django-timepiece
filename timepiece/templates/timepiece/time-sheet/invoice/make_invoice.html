@@ -49,6 +49,7 @@
                 <h3>Summary of {{ type.grouper }} Entries</h3>
                 <table class="table table-bordered table-condensed table-striped">
                     <tr>
+		        <th>Business name</th>
                         <th>Project name</th>
                         <th>Status</th>
                         <th>Uninvoiced Hours</th>
@@ -57,6 +58,7 @@
                     {% regroup type.list by project__name as project_list %}
                     {% for project in project_list %}
                         <tr>
+			    <td>{{ project.list.0.project__business__name|title }}</td>
                             <td>{{ project.grouper }}</td>
                             <td>{{ project.list.0.project__status__label|title }}</td>
                             <td class="hours">{% get_uninvoiced_hours project.list %}</td>

@@ -760,7 +760,7 @@ def invoice_projects(request):
     project_totals = entries.filter(status='approved',
         project__type__billable=True, project__status__billable=True).values(
         'project__type__pk', 'project__type__label', 'project__name', 'hours',
-        'project__pk', 'status', 'project__status__label'
+        'project__pk', 'status', 'project__status__label', 'project__business__name'
     ).annotate(s=Sum('hours')).order_by('project__type__label',
                                         'project__name', 'status')
     return render_to_response(
