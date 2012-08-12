@@ -459,17 +459,25 @@ class ProjectTimesheet(DetailView):
         context = super(ProjectTimesheet, self).get_context_data(**kwargs)
         project = self.object
         year_month_form = timepiece_forms.YearMonthForm(self.request.GET or
-                                                        None)
+                                                        None, allow_any=True)
+        entries_qs = None
         if self.request.GET and year_month_form.is_valid():
             from_date, to_date = year_month_form.save()
+            if from_date is None and to_date is None:
+                entries_qs = timepiece.Entry.objects
+                from_date = datetime.datetime(2010,1,1)
+                to_date = datetime.datetime.today()
         else:
             date = utils.add_timezone(datetime.datetime.today())
             from_date = utils.get_month_start(date).date()
             to_date = from_date + relativedelta(months=1)
-        entries_qs = timepiece.Entry.objects
-        entries_qs = entries_qs.timespan(from_date, span='month').filter(
-            project=project
-        )
+
+        if entries_qs is None:
+            entries_qs = timepiece.Entry.objects
+            entries_qs = entries_qs.timespan(from_date, span='month')
+
+        entries_qs = entries_qs.filter(project=project)
+
         extra_values = ('start_time', 'end_time', 'comments', 'seconds_paused',
                 'id', 'location__name', 'project__name', 'activity__name',
                 'status')

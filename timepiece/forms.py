@@ -408,7 +408,12 @@ class YearMonthForm(forms.Form):
     year = forms.ChoiceField(label='')
 
     def __init__(self, *args, **kwargs):
+        allow_any = kwargs.pop('allow_any', False)
         super(YearMonthForm, self).__init__(*args, **kwargs)
+
+        if allow_any:
+            self.fields.insert(0, 'select_all', forms.ChoiceField(label='', choices=(('all', 'Select All Entries'), ('month', 'Specific month')), initial='all'))
+
         now = datetime.now()
         this_year = now.year
         this_month = now.month
@@ -437,7 +442,10 @@ class YearMonthForm(forms.Form):
         from_date = datetime(year, month, 1)
         to_date = from_date + relativedelta(months=1)
 
-        return (from_date, to_date)
+        if 'select_all' in self.cleaned_data and self.cleaned_data.get('select_all') == 'all':
+            return ( None, None )
+        else:
+            return (from_date, to_date)
 
 
 class UserYearMonthForm(YearMonthForm):
