@@ -1087,6 +1087,8 @@ def list_projects(request):
         search, status = form.save()
         if len(status) == 0:
             status = timepiece.Attribute.objects.get(label='open')
+        elif status == 'any':
+            status = ''
         projects = timepiece.Project.objects.filter(
             Q(name__icontains=search) | Q(description__icontains=search))
         projects = projects.filter(status=status) if status else projects
