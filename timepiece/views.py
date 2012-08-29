@@ -1096,7 +1096,7 @@ def list_projects(request):
                 reverse('view_project', kwargs=url_kwargs)
             )
     else:
-        projects = timepiece.Project.objects.all()
+        projects = timepiece.Project.objects.filter(status='open')
 
     projects = projects.order_by("business__name", "description")
 
