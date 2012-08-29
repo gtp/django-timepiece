@@ -35,7 +35,10 @@
                     <tr>
                         <th>Business</th>
                         <th>Name</th>
+			<td>Hours</td>
+			<td>Users</td>
                         <th>Description</th>
+			<th>Edit</th>
                         <th>Timesheet</th>
                     </tr>
                 </thead>
@@ -44,7 +47,14 @@
                         <tr>
                             <td>{{ project.business }}</td>
                             <td><a href="{% url 'view_project' project_id=project.id %}">{{ project.name }}</a></td>
+			    <td>{{ project.total_hours }}</td>
+			    <td>{{ project.hardest_working_users|join:"," }}</td>
                             <td>{{ project.description|truncatewords:8 }}</td>
+			    <td>
+			      {% if perms.timepiece.change_project %}
+			        <a href='{% url 'edit_project' project_id=project.id %}'>edit</a>
+			      {% endif %}
+			    </td>
                             <td><a href="{% url 'project_time_sheet' project.id %}">Timesheet</a></td>
                         </tr>
                     {% endfor %}

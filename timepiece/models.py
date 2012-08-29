@@ -1,7 +1,7 @@
 import datetime
 import logging
 from decimal import Decimal
-
+from django.db.models import Count
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
@@ -103,6 +103,23 @@ class Project(models.Model):
         related_name='projects_with_status',
     )
     description = models.TextField()
+
+    @property
+    def total_hours(self):
+        entries_qs = Entry.objects.filter(project=self)
+        total = entries_qs.aggregate(hours=Sum('hours'))['hours']
+        return total
+
+    @property
+    def hardest_working_users(self):
+        entries_qs = Entry.objects.filter(project=self)
+        def key(x):
+            return x['count']
+
+        user_totals = entries_qs.values("user").annotate(num_entries=Count('user')).order_by('-num_entries')[:2]
+        for user_total in user_totals:
+            user_total['username'] = User.objects.get(pk=user_total['user']).username
+        return [ x['username'] for x in user_totals ]
 
     class Meta:
         ordering = ('name', 'status', 'type',)
