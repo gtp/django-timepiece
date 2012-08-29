@@ -1098,6 +1098,8 @@ def list_projects(request):
     else:
         projects = timepiece.Project.objects.all()
 
+    projects = projects.order_by("business__name", "description")
+
     context = {
         'form': form,
         'projects': projects.select_related('business'),
