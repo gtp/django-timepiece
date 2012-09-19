@@ -105,6 +105,10 @@ class Project(models.Model):
     description = models.TextField()
 
     @property
+    def is_open(self):
+        return self.status.label == 'open'
+
+    @property
     def total_hours(self):
         entries_qs = Entry.objects.filter(project=self)
         total = entries_qs.aggregate(hours=Sum('hours'))['hours']

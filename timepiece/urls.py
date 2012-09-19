@@ -74,6 +74,11 @@ urlpatterns = patterns('',
         name='edit_project',
     ),
     url(
+        r'^project/(?P<project_id>\d+)/close/$',
+        views.create_close_project,
+        name='close_project',
+    ),
+    url(
         r'^project/(?P<project_id>\d+)/user/add/$',
         views.add_user_to_project,
         name='add_user_to_project',

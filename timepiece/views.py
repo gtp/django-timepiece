@@ -1208,6 +1208,13 @@ def edit_project_relationship(request, project_id, user_id):
     }
     return context
 
+@permission_required('timepiece.add_project')
+@permission_required('timepiece.change_project')
+def create_close_project(request, project_id=None):
+    project = get_object_or_404(timepiece.Project, pk=project_id)
+    project.status = timepiece.Attribute.objects.get(label='closed', type='project-status')
+    project.save()
+    return HttpResponseRedirect(reverse('list_projects'))
 
 @permission_required('timepiece.add_project')
 @permission_required('timepiece.change_project')
